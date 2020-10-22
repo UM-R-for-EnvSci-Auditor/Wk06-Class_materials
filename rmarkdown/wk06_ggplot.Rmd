@@ -49,7 +49,7 @@ I have expressed my disapproval of bar plots, however i indicated that there are
 
 Plain stacked bars vary in height depending on the total value of the stack. Great for showing differences in the absolute number of, for example, organisms between sites, while also showing differences in composition.
 
-```{r Stacked bars}
+```{r stacked_bars}
 
 argentina_clean %>% 
   filter(season == "2") %>% 

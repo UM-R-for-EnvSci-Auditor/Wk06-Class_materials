@@ -114,7 +114,7 @@ argentina_clean %>%
   geom_col(aes(x = site, y = counts, fill = species))
 ```
 
-![](wk06_ggplot_files/figure-html/Stacked bars-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/stacked_bars-1.png)<!-- -->
 
 
 ## Stacked bars percent
