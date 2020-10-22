@@ -15,7 +15,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
 ```
 
 ```
@@ -26,7 +26,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -114,7 +114,7 @@ argentina_clean %>%
   geom_col(aes(x = site, y = counts, fill = species))
 ```
 
-![](wk06_ggplot_files/figure-html/Stacked bars-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/stacked_bars-1.png)<!-- -->
 
 
 ## Stacked bars percent
@@ -133,7 +133,7 @@ argentina_clean %>%
 ## Warning: Removed 8 rows containing missing values (geom_col).
 ```
 
-![](wk06_ggplot_files/figure-html/stacked bars percent-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/stacked_bars_percent-1.png)<!-- -->
 
 ## Side-by-dide bars
 
@@ -147,7 +147,7 @@ argentina_clean %>%
   geom_col(aes(x = site, y = counts, fill = species), position = "dodge")
 ```
 
-![](wk06_ggplot_files/figure-html/Side-by-dide bars-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/Side_by_side_bars-1.png)<!-- -->
 
 
 of course, you can always use tools like faceting to include more variables, like season in this case
@@ -165,7 +165,7 @@ argentina_clean %>%
 ## Warning: Removed 8 rows containing missing values (geom_col).
 ```
 
-![](wk06_ggplot_files/figure-html/stacked bars percent facets-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/stacked_bars_percent_facets-1.png)<!-- -->
 
 
 # Distributions
@@ -198,8 +198,7 @@ penguins %>%
 ```r
 penguins %>% 
   ggplot() +
-  facet_wrap(~species)+
-  geom_density(aes(x = body_mass_g))
+  geom_density(aes(x = body_mass_g, fill = species), alpha = 0.4)
 ```
 
 ```
@@ -208,13 +207,13 @@ penguins %>%
 
 ![](wk06_ggplot_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
-An option that is becoming quite popular is the `geom_density_ridgelines()` which is part of is part of the `ggridges` package by Claus Wilke. It is great to show the pverlap between distributions, and hence, highlight any existing differences.
+An option that is becoming quite popular is the `geom_density_ridgelines()` which is part of is part of the `ggridges` package by Claus Wilke. It is great to show the overlap between distributions, and hence, highlight any existing differences.
 
 
 ```r
 penguins %>% 
   ggplot() +
-  geom_density_ridges(aes(x = body_mass_g, y = species, fill = species), alpha = 0.6) 
+  geom_density_ridges(aes(x = body_mass_g, y = species, fill = species), alpha = 0.4, scale = 100) 
 ```
 
 ```
@@ -317,7 +316,9 @@ Lets give it a first try to plotting them
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   ggplot() +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound))
@@ -330,11 +331,12 @@ But depth is easier seen if it goes **down**!
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   ggplot() +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound)) +
-
   
   scale_y_reverse()
 ```
@@ -347,7 +349,9 @@ Now... there is such a difference in concentrations... Let's see if i can log th
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
@@ -367,7 +371,9 @@ depth_data %>%
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
@@ -455,13 +461,22 @@ There is a last option, when we want to include fixed lines (e.g. for a referenc
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound)) +
+  
   geom_hline(aes(yintercept = 500), linetype = "dashed") +
+  
+  geom_hline(aes(yintercept = 250), linetype = "dotdash") +
+  
+  geom_vline(aes(xintercept = 1000)) +
+  
+
 
   #scales
   scale_y_reverse(expand = expansion(mult = 0, add = 0)) +
@@ -571,7 +586,9 @@ By now you  must be used to that grey background... Well, there are more options
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
@@ -616,26 +633,38 @@ depth_data %>%
 ![](wk06_ggplot_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 
-## theme classic
+## theme minimal
 
 
 ```r
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
+  geom_rect(data = tibble(ymin = 250, ymax = 500, xmin = 10, xmax = Inf), 
+            aes(ymin = ymin, ymax = ymax, xmin = xmin, xmax = xmax), alpha = 0.2) +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound)) +
   geom_hline(aes(yintercept = 500), linetype = "dashed") +
 
   #scales
   scale_y_reverse(expand = expansion(mult = 0, add = 0)) +
-  scale_x_log10() +
+  scale_x_log10(limits = c(10, 50000)) +
   
   # themes
   
   theme_minimal()
 ```
 
+```
+## Warning: Removed 1 rows containing missing values (geom_point).
+```
+
 ![](wk06_ggplot_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+
+
+
+

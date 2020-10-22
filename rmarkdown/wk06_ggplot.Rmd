@@ -49,7 +49,7 @@ I have expressed my disapproval of bar plots, however i indicated that there are
 
 Plain stacked bars vary in height depending on the total value of the stack. Great for showing differences in the absolute number of, for example, organisms between sites, while also showing differences in composition.
 
-```{r Stacked bars}
+```{r stacked_bars}
 
 argentina_clean %>% 
   filter(season == "2") %>% 
@@ -63,7 +63,7 @@ argentina_clean %>%
 
 In this version, we loose the information relative to the differneces in the total counts per site, but we make difference sin species composition much more obvious.
 
-```{r stacked bars percent}
+```{r stacked_bars_percent}
 
 argentina_clean %>% 
   filter(season == "2") %>% 
@@ -76,7 +76,7 @@ argentina_clean %>%
 
 Not quite aplicable for the particular case of species counts, but it can be handy in some instances.
 
-```{r Side-by-dide bars}
+```{r Side_by_side_bars}
 
 argentina_clean %>% 
   filter(season == "2") %>% 
@@ -91,7 +91,7 @@ argentina_clean %>%
 of course, you can always use tools like faceting to include more variables, like season in this case
 
 
-```{r stacked bars percent facets}
+```{r stacked_bars_percent_facets}
 
 argentina_clean %>% 
   ggplot() +
@@ -122,18 +122,17 @@ penguins %>%
 
 penguins %>% 
   ggplot() +
-  facet_wrap(~species)+
-  geom_density(aes(x = body_mass_g))
+  geom_density(aes(x = body_mass_g, fill = species), alpha = 0.4)
 
 ```
 
-An option that is becoming quite popular is the `geom_density_ridgelines()` which is part of is part of the `ggridges` package by Claus Wilke. It is great to show the pverlap between distributions, and hence, highlight any existing differences.
+An option that is becoming quite popular is the `geom_density_ridgelines()` which is part of is part of the `ggridges` package by Claus Wilke. It is great to show the overlap between distributions, and hence, highlight any existing differences.
 
 ```{r}
 
 penguins %>% 
   ggplot() +
-  geom_density_ridges(aes(x = body_mass_g, y = species, fill = species), alpha = 0.6) 
+  geom_density_ridges(aes(x = body_mass_g, y = species, fill = species), alpha = 0.4, scale = 100) 
 
 ```
 
@@ -212,7 +211,9 @@ Lets give it a first try to plotting them
 ```{r}
 
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   ggplot() +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound))
@@ -226,13 +227,15 @@ But depth is easier seen if it goes **down**!
 ```{r}
 
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   ggplot() +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound)) +
-
   
   scale_y_reverse()
+
 
 
 ```
@@ -243,7 +246,9 @@ Now... there is such a difference in concentrations... Let's see if i can log th
 ```{r}
 
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
@@ -262,7 +267,9 @@ depth_data %>%
 ```{r}
 
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
@@ -346,13 +353,22 @@ There is a last option, when we want to include fixed lines (e.g. for a referenc
 ```{r}
 
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound)) +
+  
   geom_hline(aes(yintercept = 500), linetype = "dashed") +
+  
+  geom_hline(aes(yintercept = 250), linetype = "dotdash") +
+  
+  geom_vline(aes(xintercept = 1000)) +
+  
+
 
   #scales
   scale_y_reverse(expand = expansion(mult = 0, add = 0)) +
@@ -424,6 +440,7 @@ site_data %>%
   # scales
   
   scale_color_viridis(discrete = TRUE)
+  
 
 
 ```
@@ -454,7 +471,9 @@ By now you  must be used to that grey background... Well, there are more options
 ```{r}
 
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
@@ -496,24 +515,33 @@ depth_data %>%
 ```
 
 
-## theme classic
+## theme minimal
 
 ``` {r}
 depth_data %>% 
-  pivot_longer(cols = -depth, names_to = "compound", values_to = "concentration") %>% 
+  pivot_longer(cols = -depth, 
+               names_to = "compound", 
+               values_to = "concentration") %>% 
   
   #main plotting elements
   ggplot() +
+  geom_rect(data = tibble(ymin = 250, ymax = 500, xmin = 10, xmax = Inf), 
+            aes(ymin = ymin, ymax = ymax, xmin = xmin, xmax = xmax), alpha = 0.2) +
   geom_point(aes(x = concentration, y = depth, colour = compound)) +
   geom_path(aes(x = concentration, y = depth, colour = compound)) +
   geom_hline(aes(yintercept = 500), linetype = "dashed") +
 
   #scales
   scale_y_reverse(expand = expansion(mult = 0, add = 0)) +
-  scale_x_log10() +
+  scale_x_log10(limits = c(10, 50000)) +
   
   # themes
   
   theme_minimal()
+  
 
 ```
+
+
+
+
