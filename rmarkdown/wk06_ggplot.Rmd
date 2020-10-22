@@ -63,7 +63,7 @@ argentina_clean %>%
 
 In this version, we loose the information relative to the differneces in the total counts per site, but we make difference sin species composition much more obvious.
 
-```{r stacked bars percent}
+```{r stacked_bars_percent}
 
 argentina_clean %>% 
   filter(season == "2") %>% 
@@ -76,7 +76,7 @@ argentina_clean %>%
 
 Not quite aplicable for the particular case of species counts, but it can be handy in some instances.
 
-```{r Side-by-dide bars}
+```{r Side_by_side_bars}
 
 argentina_clean %>% 
   filter(season == "2") %>% 
@@ -91,7 +91,7 @@ argentina_clean %>%
 of course, you can always use tools like faceting to include more variables, like season in this case
 
 
-```{r stacked bars percent facets}
+```{r stacked_bars_percent_facets}
 
 argentina_clean %>% 
   ggplot() +

@@ -133,7 +133,7 @@ argentina_clean %>%
 ## Warning: Removed 8 rows containing missing values (geom_col).
 ```
 
-![](wk06_ggplot_files/figure-html/stacked bars percent-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/stacked_bars_percent-1.png)<!-- -->
 
 ## Side-by-dide bars
 
@@ -147,7 +147,7 @@ argentina_clean %>%
   geom_col(aes(x = site, y = counts, fill = species), position = "dodge")
 ```
 
-![](wk06_ggplot_files/figure-html/Side-by-dide bars-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/Side_by_side_bars-1.png)<!-- -->
 
 
 of course, you can always use tools like faceting to include more variables, like season in this case
@@ -165,7 +165,7 @@ argentina_clean %>%
 ## Warning: Removed 8 rows containing missing values (geom_col).
 ```
 
-![](wk06_ggplot_files/figure-html/stacked bars percent facets-1.png)<!-- -->
+![](wk06_ggplot_files/figure-html/stacked_bars_percent_facets-1.png)<!-- -->
 
 
 # Distributions
